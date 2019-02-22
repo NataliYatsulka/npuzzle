@@ -7,7 +7,9 @@ public class Main {
         String size;
         String heuristic;
         boolean mapPath;
-        Options options = new Options();
+        boolean original;
+
+        Options options = Parsing.parceInputArgs(args);
         HelpFormatter formatter = new HelpFormatter();
 
         try {
@@ -17,7 +19,11 @@ public class Main {
             size = cmd.hasOption("size") ? cmd.getOptionValue("size") : null;
             heuristic = cmd.getOptionValue("heuristic");
             mapPath = cmd.hasOption("mapPath");
+            original = cmd.hasOption("original");
             Parsing.initArgs(path, size, heuristic);
+
+            System.out.println("path = " + path + "\nsize = " + size + "\nheuristic = " + heuristic + "\nmapPath = "
+                    + mapPath + "\norig = " + original);
 
         } catch (ParseException e) {
             System.out.println(e.getMessage());
@@ -25,6 +31,6 @@ public class Main {
             System.exit(1);
         }
 
-        System.out.println("Enf Of File");
+        System.out.println("\nEnf Of File");
     }
 }
