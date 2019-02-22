@@ -3,9 +3,9 @@ import org.apache.commons.cli.*;
 public class Main {
 
     public static void main(String[] args) {
+        String path = null;
+        String size = null;
         Options options = Parsing.parsingInputArgs(args);
-        String path;
-        String size;
         String heuristic;
         boolean mapPath;
         boolean original;
@@ -28,6 +28,16 @@ public class Main {
         } catch (ParseException e) {
             System.out.println(e.getMessage());
             Parsing.usage(formatter, options);
+        }
+        Integer[] randomMap = (size != null) ? Parsing.generatePuzzle(Integer.parseInt(size)) : Parsing.readFromFile(path);
+
+//delete
+        if (size != null) {
+            for (int i = 0; i < Integer.parseInt(size) * Integer.parseInt(size); i++) {
+                System.out.print(randomMap[i] + " ");
+                if (i % 3 == 2)
+                    System.out.println();
+            }
         }
 
         System.out.println("\nEnf Of File");

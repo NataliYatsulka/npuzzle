@@ -2,14 +2,83 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 
+import java.util.*;
+
 public class Parsing {
 
-    public static void usage(HelpFormatter formatter, Options options){
+    public static void usage(HelpFormatter formatter, Options options) {
         formatter.printHelp("npuzzle", options);
         System.exit(1);
     }
 
-    public static Options parsingInputArgs(String[] args){
+    public static Integer[] removeTheElement(Integer[] arr, int index) {
+
+        // If the array is empty
+        // or the index is not in array range
+        // return the original array
+        if (arr == null
+                || index < 0
+                || index >= arr.length) {
+
+            return arr;
+        }
+
+        // Create another array of size one less
+        Integer[] anotherArray = new Integer[arr.length - 1];
+
+        // Copy the elements except the index
+        // from original array to the other array
+        for (int i = 0, k = 0; i < arr.length; i++) {
+
+            // if the index is
+            // the removal element index
+            if (i == index) {
+                continue;
+            }
+
+            // if the index is not
+            // the removal element index
+            anotherArray[k++] = arr[i];
+        }
+
+        // return the resultant array
+        return anotherArray;
+    }
+
+    public static Integer[] generatePuzzle(int count) {
+        int size = count * count;
+
+        Integer[] arr = new Integer[size];
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = i;
+        }
+
+        int[] mas = new int[size];
+        Random r = new Random();
+        int arrLen = size;
+        int k = 0;
+
+        for (int i = 0; i < mas.length; i++) {
+            k = r.nextInt(arrLen);
+            mas[i] = arr[k];
+            removeTheElement(arr, k);
+            arrLen--;
+        }
+        Collections.shuffle(Arrays.asList(arr));
+        System.out.println(Arrays.toString(arr));
+
+        return arr;
+
+
+    }
+
+    public static Integer[] readFromFile(String path) {
+        int size = 0;
+        Integer[] map = new Integer[size];
+        return map;
+    }
+
+    public static Options parsingInputArgs(String[] args) {
         Options options = new Options();
 
         Option path = new Option("p", "path", true, "path to your file with npuzzle");
@@ -42,7 +111,7 @@ public class Parsing {
             System.out.println("ERROR:  You can use only one of path/size");
             usage(formatter, options);
         }
-        if (path == null && size == null){
+        if (path == null && size == null) {
             System.out.println("ERROR:  Both path & size cannot be null");
             usage(formatter, options);
         }
