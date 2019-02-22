@@ -34,8 +34,8 @@ public class Main {
 //delete
         if (size != null) {
             for (int i = 0; i < Integer.parseInt(size) * Integer.parseInt(size); i++) {
-                System.out.print(randomMap[i] + " ");
-                if (i % 3 == 2)
+                System.out.print(randomMap[i] + "   ");
+                if (i % Integer.parseInt(size) == Integer.parseInt(size) -1 )
                     System.out.println();
             }
         }
