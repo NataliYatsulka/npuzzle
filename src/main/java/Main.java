@@ -3,13 +3,13 @@ import org.apache.commons.cli.*;
 public class Main {
 
     public static void main(String[] args) {
+        Options options = Parsing.parsingInputArgs(args);
         String path;
         String size;
         String heuristic;
         boolean mapPath;
         boolean original;
 
-        Options options = Parsing.parceInputArgs(args);
         HelpFormatter formatter = new HelpFormatter();
 
         try {
@@ -20,15 +20,14 @@ public class Main {
             heuristic = cmd.getOptionValue("heuristic");
             mapPath = cmd.hasOption("mapPath");
             original = cmd.hasOption("original");
-            Parsing.initArgs(path, size, heuristic);
+            Parsing.initArgs(path, size, heuristic, formatter, options);
 
             System.out.println("path = " + path + "\nsize = " + size + "\nheuristic = " + heuristic + "\nmapPath = "
                     + mapPath + "\norig = " + original);
 
         } catch (ParseException e) {
             System.out.println(e.getMessage());
-            formatter.printHelp("npuzzle", options);
-            System.exit(1);
+            Parsing.usage(formatter, options);
         }
 
         System.out.println("\nEnf Of File");

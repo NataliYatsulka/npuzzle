@@ -1,9 +1,15 @@
+import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 
 public class Parsing {
 
-    public static Options parceInputArgs(String[] args){
+    public static void usage(HelpFormatter formatter, Options options){
+        formatter.printHelp("npuzzle", options);
+        System.exit(1);
+    }
+
+    public static Options parsingInputArgs(String[] args){
         Options options = new Options();
 
         Option path = new Option("p", "path", true, "path to your file with npuzzle");
@@ -29,20 +35,24 @@ public class Parsing {
         return options;
     }
 
-    public static void initArgs(String path, String size, String heuristic) {
+    public static void initArgs(String path, String size, String heuristic, HelpFormatter formatter, Options options) {
         int min = 3;
 
         if (path != null && size != null) {
             System.out.println("ERROR:  You can use only one of path/size");
-            System.exit(1);
+            usage(formatter, options);
+        }
+        if (path == null && size == null){
+            System.out.println("ERROR:  Both path & size cannot be null");
+            usage(formatter, options);
         }
         if (size != null && Integer.parseInt(size) < min) {
-            System.out.println("ERROR:  size of map cannot be < " + min);
-            System.exit(1);
+            System.out.println("ERROR:  Size of map cannot be < " + min);
+            usage(formatter, options);
         }
         if (heuristic != null && !heuristic.equals("m") && !heuristic.equals("h") && !heuristic.equals("e")) {
             System.out.println("ERROR:  Heuristic can be only m/h/e, not " + heuristic);
-            System.exit(1);
+            usage(formatter, options);
         }
     }
 }
