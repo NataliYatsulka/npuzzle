@@ -1,10 +1,15 @@
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 
 public class Parsing {
+    public static int puzzleSize;
 
     public static void usage(HelpFormatter formatter, Options options) {
         formatter.printHelp("npuzzle", options);
@@ -57,24 +62,65 @@ public class Parsing {
         return options;
     }
 
-    public static void initArgs(String path, String size, String heuristic, HelpFormatter formatter, Options options) {
+    public static void initArgs(String path, String size, String heuristic, HelpFormatter formatter, Options options) throws ParseException {
         int min = 3;
 
         if (path != null && size != null) {
-            System.out.println("ERROR:  You can use only one of path/size");
-            usage(formatter, options);
+            throw new ParseException("ERROR:  You can use only one of path/size");
         }
         if (path == null && size == null) {
-            System.out.println("ERROR:  Both path & size cannot be null");
-            usage(formatter, options);
+//            System.out.println("ERROR:  Both path & size cannot be null");
+//            usage(formatter, options);
+            throw new ParseException("ERROR:  Both path & size cannot be null");
         }
         if (size != null && Integer.parseInt(size) < min) {
-            System.out.println("ERROR:  Size of map cannot be < " + min);
-            usage(formatter, options);
+//            System.out.println("ERROR:  Size of map cannot be < " + min);
+//            usage(formatter, options);
+            throw new ParseException("ERROR:  Both path & size cannot be null");
         }
         if (heuristic != null && !heuristic.equals("m") && !heuristic.equals("h") && !heuristic.equals("e")) {
-            System.out.println("ERROR:  Heuristic can be only m/h/e, not " + heuristic);
-            usage(formatter, options);
+//            System.out.println("ERROR:  Heuristic can be only m/h/e, not " + heuristic);
+//            usage(formatter, options);
+            throw new ParseException("ERROR:  Heuristic can be only m/h/e, not " + heuristic);
         }
+    }
+
+    public static String readTextFile(String fileName) throws IOException {
+        String content = new String(Files.readAllBytes(Paths.get(fileName)));
+        return content;
+    }
+
+    public static List<String> readTextFileByLines(String fileName) throws IOException {
+        List<String> lines = Files.readAllLines(Paths.get(fileName));
+        return lines;
+    }
+
+    public static boolean isNumeric(String str) {
+        for (char c : str.toCharArray()) {
+            if (!Character.isDigit(c)) return false;
+        }
+        return true;
+    }
+
+    public static List<Integer> checkParsingFile(List<String> list) throws ParseException {
+        List<Integer> listInt = new ArrayList<>();
+
+        for (int i = 0; i < list.size(); i++) {
+            String[] res = list.get(i).split("#");
+            list.set(i, res[0]);
+        }
+        for (int i = 0; i < list.size(); i++) {
+            if (!list.get(i).isEmpty() && isNumeric(list.get(i))) {
+                puzzleSize = Integer.parseInt(list.get(i));
+                break;
+            }
+        }
+        System.out.println("puzzleSize = " + puzzleSize);
+        if (puzzleSize < 3)
+            throw new ParseException("ERROR:  Size of map cannot be < 3");
+
+        System.out.println(list);
+
+        return listInt;
     }
 }
