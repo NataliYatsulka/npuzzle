@@ -109,6 +109,28 @@ public class Parsing {
             String[] res = list.get(i).split("#");
             list.set(i, res[0]);
         }
+        List<String> list1 = list;
+//        int j = 0;
+//        int k = 0;
+//        String t = Integer.toString(puzzleSize);
+//        for (int i = 0; i < list.size(); i++) {
+//            if (list.get(i).equals("") || list.get(i).equals(t)) {
+//                k++;
+//                System.out.println("k = " + k);
+//            }
+//        }
+//        for (int i = 0; i < list.size(); i++) {
+//            if (!list.get(i).equals("") && !list.get(i).equals(puzzleSize) && j < (list.size() - k)) {
+//                list1.set(j, list.get(i));
+////                System.out.println("one = " + list1.get(j));
+//                j++;
+//            }
+//        }
+//        while (j < list1.size())
+//            list1.remove(j);
+//
+//        System.out.println("qqq" + list1);
+//
         for (int i = 0; i < list.size(); i++) {
             if (!list.get(i).isEmpty() && isNumeric(list.get(i))) {
                 puzzleSize = Integer.parseInt(list.get(i));
@@ -118,6 +140,38 @@ public class Parsing {
         System.out.println("puzzleSize = " + puzzleSize);
         if (puzzleSize < 3)
             throw new ParseException("ERROR:  Size of map cannot be < 3");
+
+        int j = 0;
+        int k = 0;
+        String t = Integer.toString(puzzleSize);
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).equals("") || list.get(i).equals(t)) {
+                k++;
+                System.out.println("k = " + k);
+            }
+        }
+        for (int i = 0; i < list.size(); i++) {
+            if (!list.get(i).equals("") && !list.get(i).equals(t) && j < (list.size() - k)) {
+                list1.set(j, list.get(i));
+                j++;
+            }
+        }
+        while (j < list1.size())
+            list1.remove(j);
+
+        System.out.println("qqq" + list1);
+
+        if (list1.size() != puzzleSize)
+            throw new ParseException("ERROR: Puzzle doesn't exist with this size");
+
+        k = 0;
+        for (int i = 0; i < list.size(); i++) {
+            while (k++ < puzzleSize) {
+                for (int z = 0; z < puzzleSize; z++)
+                    list1.get(i).matches("(//s*//d+)");
+                System.out.println("true");
+            }
+        }
 
         System.out.println(list);
 
