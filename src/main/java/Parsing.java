@@ -7,8 +7,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class Parsing {
     public static int puzzleSize;
@@ -123,15 +121,19 @@ public class Parsing {
         for (int i = 0; i < list.size(); i++) {
             if (list.get(i).equals("") || list.get(i).equals(t)) {
                 k++;
-                System.out.println("k = " + k);
+                System.out.println("11k = " + k);
             }
         }
+
         for (int i = 0; i < list.size(); i++) {
             if (!list.get(i).equals("") && !list.get(i).equals(t) && j < (list.size() - k)) {
                 list1.set(j, list.get(i));
                 j++;
             }
         }
+
+        if (!list.get(j).isEmpty())
+            throw new ParseException("ERROR:  Bad amount of row");
         while (j < list1.size())
             list1.remove(j);
 
@@ -170,6 +172,8 @@ public class Parsing {
             System.out.println(list1.get(i).charAt(5));
             k = k + temp.length;
             System.out.println("k = " + k);
+            if (k % puzzleSize != 0)
+                throw new ParseException("ERROR:  Bad amount of element in the row");
 //            System.out.println("temp = " + temp.length);
 //            System.out.println(temp[0]);
         }
