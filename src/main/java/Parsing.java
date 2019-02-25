@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Parsing {
     public static int puzzleSize;
@@ -69,18 +71,12 @@ public class Parsing {
             throw new ParseException("ERROR:  You can use only one of path/size");
         }
         if (path == null && size == null) {
-//            System.out.println("ERROR:  Both path & size cannot be null");
-//            usage(formatter, options);
             throw new ParseException("ERROR:  Both path & size cannot be null");
         }
         if (size != null && Integer.parseInt(size) < min) {
-//            System.out.println("ERROR:  Size of map cannot be < " + min);
-//            usage(formatter, options);
             throw new ParseException("ERROR:  Both path & size cannot be null");
         }
         if (heuristic != null && !heuristic.equals("m") && !heuristic.equals("h") && !heuristic.equals("e")) {
-//            System.out.println("ERROR:  Heuristic can be only m/h/e, not " + heuristic);
-//            usage(formatter, options);
             throw new ParseException("ERROR:  Heuristic can be only m/h/e, not " + heuristic);
         }
     }
@@ -110,27 +106,7 @@ public class Parsing {
             list.set(i, res[0]);
         }
         List<String> list1 = list;
-//        int j = 0;
-//        int k = 0;
-//        String t = Integer.toString(puzzleSize);
-//        for (int i = 0; i < list.size(); i++) {
-//            if (list.get(i).equals("") || list.get(i).equals(t)) {
-//                k++;
-//                System.out.println("k = " + k);
-//            }
-//        }
-//        for (int i = 0; i < list.size(); i++) {
-//            if (!list.get(i).equals("") && !list.get(i).equals(puzzleSize) && j < (list.size() - k)) {
-//                list1.set(j, list.get(i));
-////                System.out.println("one = " + list1.get(j));
-//                j++;
-//            }
-//        }
-//        while (j < list1.size())
-//            list1.remove(j);
-//
-//        System.out.println("qqq" + list1);
-//
+
         for (int i = 0; i < list.size(); i++) {
             if (!list.get(i).isEmpty() && isNumeric(list.get(i))) {
                 puzzleSize = Integer.parseInt(list.get(i));
@@ -164,17 +140,57 @@ public class Parsing {
         if (list1.size() != puzzleSize)
             throw new ParseException("ERROR: Puzzle doesn't exist with this size");
 
+//        k = 0;
+//        for (int i = 0; i < list1.size(); i++) {
+//            while (k++ < puzzleSize) {
+//                for (int z = 0; z < puzzleSize; z++)
+//                    list1.get(i).matches("(//s*//d+)");
+//                System.out.println("true");
+//            }
+//        }
+
+
+        String[] temp;
+//        for (int i = 0; i < list1.size(); i++) {
+//            String arr = list1.get(i);
+//            for (j = 0; j < puzzleSize; j++) {
+//                temp = arr.split("//s*");
+//                System.out.println("temp = " + temp.length);
+//                System.out.println(temp[0]);
+//                if (!temp[0].isEmpty() && isNumeric(temp[0])){
+//                    listInt.add(Integer.valueOf(temp[0]));
+//                }
+//                Pattern.compile("//s*//d+").matcher(arr);
+//                while (Pattern.compile("//s*//d+").matcher(arr).find()) {
+//                    arr =
+//                }
         k = 0;
-        for (int i = 0; i < list.size(); i++) {
-            while (k++ < puzzleSize) {
-                for (int z = 0; z < puzzleSize; z++)
-                    list1.get(i).matches("(//s*//d+)");
-                System.out.println("true");
+        for (int i = 0; i < list1.size(); i++) {
+            temp = list1.get(i).split("\\s+");
+            System.out.println(list1.get(i).charAt(5));
+            k = k + temp.length;
+            System.out.println("k = " + k);
+//            System.out.println("temp = " + temp.length);
+//            System.out.println(temp[0]);
+        }
+        if (!(k == puzzleSize * puzzleSize)) {
+            throw new ParseException("ERROR:  Puzzle is not valid");
+        }
+        for (int i = 0; i < list1.size(); i++) {
+            temp = list1.get(i).split("\\s+");
+            for (j = 0; j < puzzleSize; j++) {
+                if (temp.length != puzzleSize)
+                    throw new ParseException("ERROR:  Bad row length");
+                if (!isNumeric(temp[j]))
+                    throw new ParseException("ERROR:  Puzzle should be only numeric");
+                if (isNumeric(temp[j]))
+                    listInt.add(Integer.valueOf(temp[j]));
             }
         }
 
-        System.out.println(list);
 
+//        System.out.println(list);
+        System.out.println(listInt);
         return listInt;
     }
 }

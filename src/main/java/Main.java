@@ -55,7 +55,7 @@ public class Main {
                 }
                 input = Parsing.readTextFile(path);
                 list = Parsing.checkParsingFile(Parsing.readTextFileByLines(path));
-                System.out.println(Parsing.puzzleSize);
+//                System.out.println(Parsing.puzzleSize);
             }
         } catch (IOException | ParseException ex) {
             System.out.println(ex.getMessage());
