@@ -3,6 +3,7 @@ import org.apache.commons.cli.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
@@ -35,22 +36,33 @@ public class Main {
             Parsing.usage(formatter, options);
         }
         Integer[] randomMap = (size != null) ? Parsing.generatePuzzle(Integer.parseInt(size)) : Parsing.readFromFile(path);
+        List<Integer> listInt = new ArrayList<>();
+        for (int i = 0; i < randomMap.length; i++) {
+            listInt.add(randomMap[i]);
+        }
+        System.out.println("lisssst = " + listInt);
+        try {
+            Parsing.checkMassIntegers(listInt, Integer.parseInt(size));
+        } catch (ParseException ex) {
+            Parsing.usage(formatter, options);
+        }
 
 //delete
         if (size != null) {
             for (int i = 0; i < Integer.parseInt(size) * Integer.parseInt(size); i++) {
-                System.out.print(randomMap[i] + "   ");
+                System.out.print(randomMap[i] + "  ");
                 if (i % Integer.parseInt(size) == Integer.parseInt(size) - 1)
                     System.out.println();
             }
         }
+
 
         String input;
         List<Integer> list;
         try {
             if (path != null) {
                 File f = new File(path);
-                if(!f.exists() || f.isDirectory()) {
+                if (!f.exists() || f.isDirectory()) {
                     throw new FileNotFoundException("ERROR:   File not found");
                 }
                 input = Parsing.readTextFile(path);

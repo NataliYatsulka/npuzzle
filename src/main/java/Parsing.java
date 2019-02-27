@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class Parsing {
     public static int puzzleSize;
@@ -79,6 +81,17 @@ public class Parsing {
         }
     }
 
+    public static boolean checkMassIntegers(List<Integer> list, int size) throws ParseException {
+        Collections.sort(list);
+        System.out.println("listSort = " + list);
+        List<Integer> range = IntStream.rangeClosed(0, size * size - 1)
+                .boxed().collect(Collectors.toList());
+        System.out.println("range = " + range);
+        if (!list.equals(range))
+            throw new ParseException("ERROR:  Bad number in the puzzle");
+        return true;
+    }
+
     public static String readTextFile(String fileName) throws IOException {
         String content = new String(Files.readAllBytes(Paths.get(fileName)));
         return content;
@@ -111,6 +124,7 @@ public class Parsing {
                 break;
             }
         }
+
         System.out.println("puzzleSize = " + puzzleSize);
         if (puzzleSize < 3)
             throw new ParseException("ERROR:  Size of map cannot be < 3");
@@ -125,6 +139,9 @@ public class Parsing {
             }
         }
 
+        if (list.size() - k != puzzleSize)
+            throw new ParseException("ERROR:  Bad amount of row");
+
         for (int i = 0; i < list.size(); i++) {
             if (!list.get(i).equals("") && !list.get(i).equals(t) && j < (list.size() - k)) {
                 list1.set(j, list.get(i));
@@ -132,57 +149,33 @@ public class Parsing {
             }
         }
 
-        if (!list.get(j).isEmpty())
-            throw new ParseException("ERROR:  Bad amount of row");
-        while (j < list1.size())
+        while (j < list1.size()) {
             list1.remove(j);
+        }
 
         System.out.println("qqq" + list1);
 
         if (list1.size() != puzzleSize)
             throw new ParseException("ERROR: Puzzle doesn't exist with this size");
 
-//        k = 0;
-//        for (int i = 0; i < list1.size(); i++) {
-//            while (k++ < puzzleSize) {
-//                for (int z = 0; z < puzzleSize; z++)
-//                    list1.get(i).matches("(//s*//d+)");
-//                System.out.println("true");
-//            }
-//        }
-
-
         String[] temp;
-//        for (int i = 0; i < list1.size(); i++) {
-//            String arr = list1.get(i);
-//            for (j = 0; j < puzzleSize; j++) {
-//                temp = arr.split("//s*");
-//                System.out.println("temp = " + temp.length);
-//                System.out.println(temp[0]);
-//                if (!temp[0].isEmpty() && isNumeric(temp[0])){
-//                    listInt.add(Integer.valueOf(temp[0]));
-//                }
-//                Pattern.compile("//s*//d+").matcher(arr);
-//                while (Pattern.compile("//s*//d+").matcher(arr).find()) {
-//                    arr =
-//                }
         k = 0;
+
         for (int i = 0; i < list1.size(); i++) {
-            temp = list1.get(i).split("\\s+");
-            System.out.println(list1.get(i).charAt(5));
+            temp = list1.get(i).trim().split("\\s+");
+//            System.out.println(list1.get(i).charAt(5));
             k = k + temp.length;
             System.out.println("k = " + k);
             if (k % puzzleSize != 0)
                 throw new ParseException("ERROR:  Bad amount of element in the row");
-//            System.out.println("temp = " + temp.length);
-//            System.out.println(temp[0]);
         }
         if (!(k == puzzleSize * puzzleSize)) {
             throw new ParseException("ERROR:  Puzzle is not valid");
         }
         for (int i = 0; i < list1.size(); i++) {
-            temp = list1.get(i).split("\\s+");
+            temp = list1.get(i).trim().split("\\s+");
             for (j = 0; j < puzzleSize; j++) {
+                System.out.println("temp.lenght = " + temp.length);
                 if (temp.length != puzzleSize)
                     throw new ParseException("ERROR:  Bad row length");
                 if (!isNumeric(temp[j]))
@@ -192,6 +185,7 @@ public class Parsing {
             }
         }
 
+        checkMassIntegers(listInt, puzzleSize);
 
 //        System.out.println(list);
         System.out.println(listInt);
