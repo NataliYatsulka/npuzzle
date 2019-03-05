@@ -41,8 +41,10 @@ public class Main {
             listInt.add(randomMap[i]);
         }
         System.out.println("lisssst = " + listInt);
+//        System.out.println("Integer.parseInt(size) = " + Integer.parseInt(size));
         try {
-            Parsing.checkMassIntegers(listInt, Integer.parseInt(size));
+            if (size != null)
+                Parsing.checkMassIntegers(listInt, Integer.parseInt(size));
         } catch (ParseException ex) {
             Parsing.usage(formatter, options);
         }
