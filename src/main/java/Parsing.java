@@ -185,10 +185,10 @@ public class Parsing {
             }
         }
 
-        checkMassIntegers(listInt, puzzleSize);
+        List<Integer> listCopy = new ArrayList<>();
+        listCopy.addAll(listInt);
+        checkMassIntegers(listCopy, puzzleSize);
 
-//        System.out.println(list);
-        System.out.println(listInt);
         return listInt;
     }
 }

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Main {
@@ -42,9 +43,11 @@ public class Main {
         }
         System.out.println("lisssst = " + listInt);
 //        System.out.println("Integer.parseInt(size) = " + Integer.parseInt(size));
+        List<Integer> listCopy = new ArrayList<>();
+        listCopy.addAll(listInt);
         try {
             if (size != null)
-                Parsing.checkMassIntegers(listInt, Integer.parseInt(size));
+                Parsing.checkMassIntegers(listCopy, Integer.parseInt(size));
         } catch (ParseException ex) {
             Parsing.usage(formatter, options);
         }
@@ -60,7 +63,7 @@ public class Main {
 
 
         String input;
-        List<Integer> list;
+//        List<Integer> list;
         try {
             if (path != null) {
                 File f = new File(path);
@@ -68,13 +71,21 @@ public class Main {
                     throw new FileNotFoundException("ERROR:   File not found");
                 }
                 input = Parsing.readTextFile(path);
-                list = Parsing.checkParsingFile(Parsing.readTextFileByLines(path));
+                listInt = Parsing.checkParsingFile(Parsing.readTextFileByLines(path));
 //                System.out.println(Parsing.puzzleSize);
+                System.out.println("list = " + listInt);
             }
         } catch (IOException | ParseException ex) {
             System.out.println(ex.getMessage());
             Parsing.usage(formatter, options);
         }
+        int[] mas = listInt.stream()
+                .mapToInt(Integer::intValue)
+                .toArray();
+        System.out.println(Arrays.toString(mas));
+
+        if (State.checkState(mas) == false)
+            System.out.println("There are no solution of this puzzle");
 
         System.out.println("\nEnf Of File");
     }
