@@ -16,6 +16,7 @@ public class Main {
         String heuristic;
         boolean mapPath;
         boolean original;
+        int puzzleSize = 0;
 
         HelpFormatter formatter = new HelpFormatter();
 
@@ -46,8 +47,10 @@ public class Main {
         List<Integer> listCopy = new ArrayList<>();
         listCopy.addAll(listInt);
         try {
-            if (size != null)
+            if (size != null) {
                 Parsing.checkMassIntegers(listCopy, Integer.parseInt(size));
+                puzzleSize = Integer.parseInt(size);
+            }
         } catch (ParseException ex) {
             Parsing.usage(formatter, options);
         }
@@ -74,6 +77,7 @@ public class Main {
                 listInt = Parsing.checkParsingFile(Parsing.readTextFileByLines(path));
 //                System.out.println(Parsing.puzzleSize);
                 System.out.println("list = " + listInt);
+                puzzleSize = Parsing.puzzleSize;
             }
         } catch (IOException | ParseException ex) {
             System.out.println(ex.getMessage());
@@ -84,7 +88,7 @@ public class Main {
                 .toArray();
         System.out.println(Arrays.toString(mas));
 
-        if (State.checkState(mas) == false)
+        if (State.checkState(mas, puzzleSize) == false)
             System.out.println("There are no solution of this puzzle");
 
         System.out.println("\nEnf Of File");

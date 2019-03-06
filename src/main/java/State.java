@@ -1,13 +1,12 @@
 public class State {
 
-    public static boolean checkState(int[] list){
+    public static boolean checkState(int[] list, int puzzleSize){
         int N = 0;
         int e = 0;
-        int sideSize = 4;
         for (int i = 0; i < list.length; i++) {
             /* Определяется номер ряда пустой клетки (считая с 1). */
             if (list[i] == 0) {
-                e = i / sideSize + 1;
+                e = i / puzzleSize + 1;
             }
             if (i == 0)
                 continue;
