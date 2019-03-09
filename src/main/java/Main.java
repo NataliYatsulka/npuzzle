@@ -13,7 +13,7 @@ public class Main {
         String path = null;
         String size = null;
         Options options = Parsing.parsingInputArgs(args);
-        String heuristic;
+        String heuristic = "m";
         boolean mapPath;
         boolean original;
         int puzzleSize = 0;
@@ -87,9 +87,12 @@ public class Main {
                 .mapToInt(Integer::intValue)
                 .toArray();
         System.out.println(Arrays.toString(mas));
-
-        if (State.checkState(mas, puzzleSize) == false)
+        System.out.println("PPUUUUUUUZZZLLELELLE = " + puzzleSize);
+        if (!State.checkState(mas, puzzleSize))
             System.out.println("There are no solution of this puzzle");
+        else {
+            new Algo(mas, heuristic).startSearch();
+        }
 
         System.out.println("\nEnf Of File");
     }

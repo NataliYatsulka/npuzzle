@@ -42,8 +42,8 @@ public class Heuristics {
             }
             if (list[i] != i + 1) {
                 if (list[i] == 0) {
-                    Math.sqrt(Math.pow(i % size - (list[i] - 1) % size, 2) + Math.pow((i + 1) / size - list[i] / size, 2));
-                    dist += Math.sqrt(Math.pow(i % size - size - 1, 2) + Math.pow((i + 1) / size - size, 2));
+                    Math.sqrt(Math.pow(i % size - (list[i] - 1) % size, 2) + Math.pow(((i + 1) / size) - (list[i] / size), 2));
+                    dist += Math.sqrt(Math.pow(i % size - size - 1, 2) + Math.pow(((i + 1) / size) - size, 2));
                 } else {
                     dist += Math.sqrt(i % size - (list[i] - 1) % size) + Math.abs((int) ((i + 1) / size) -
                             (int) (list[i] / size));
