@@ -1,3 +1,3 @@
 public enum Move {
-    UP, DOWN, LEFT, RIGHT;
+    UP, DOWN, LEFT, RIGHT
 }

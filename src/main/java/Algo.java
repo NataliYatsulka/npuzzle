@@ -49,7 +49,7 @@ public class Algo {
         openNodes.add(node);
 
         if (!State.checkState(node.state.list, sizePuzzle)) {
-            System.out.println("Ooo, not solvable");
+            System.out.println("There are no solution of this puzzle");
             return;
         }
 
@@ -75,6 +75,7 @@ public class Algo {
                     openNodes.add(node);
                 }
             }
+
             maxOpenNode = openNodes.size() > maxOpenNode ? openNodes.size() : maxOpenNode;
         }
             printPath();
@@ -84,6 +85,7 @@ public class Algo {
             System.out.println("Path size: " + path.size());
             System.out.println("Open nodes: " + maxOpenNode);
             System.out.println("Closed nodes: " + closedNodes.size());
+        System.out.println("open NODES = " + openNodes.size());
 
 
         System.out.println("startSearch");

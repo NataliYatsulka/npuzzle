@@ -72,26 +72,56 @@ public class State {
     }
 
     public static boolean checkState(int[] list, int puzzleSize) {
-        int n = 0;
-        int e = 0;
-        for (int i = 0; i < list.length; i++) {
-            /* Определяется номер ряда пустой клетки (считая с 1). */
-            if (list[i] == 0) {
-                System.out.println("pzlsz=" + puzzleSize);
-                e = i / puzzleSize + 1;
-            }
-            if (i == 0)
-                continue;
-            /* Производится подсчет количества клеток меньших текущей */
-            for (int j = i + 1; j < list.length; j++) {
-                if (list[j] < list[i]) {
-                    n++;
-                }
-            }
+
+        int[] solved = Heuristics.puzzleGoal(puzzleSize);
+        int inver = 0;
+        int[] copy = new int[puzzleSize * puzzleSize];
+
+        for (int t = 0; t < puzzleSize*puzzleSize; t++){
+            copy[t] = list[t];
         }
-        n = n + e;
-        /* Если N является нечётной, то решения головоломки не существует. */
-        return (n & 1) == 0; // Первый бит четного числа равен 0
+
+        int i = 0;
+
+        for (int l = 0; l < puzzleSize * puzzleSize; l++) {
+            if (copy[l] == 0)
+                i = l;
+        }
+//        while (list[i] != 0) {
+//            i += 1;
+//        }
+        copy[i] = puzzleSize * puzzleSize;
+        if (puzzleSize % 2 == 0) {
+            inver += i / puzzleSize;
+        }
+        i = 0;
+        while (solved[i] != 0){
+        i += 1;}
+        solved[i] = puzzleSize * puzzleSize;
+        if (puzzleSize % 2 == 0) {
+            inver += i / puzzleSize;
+        }
+        i = 0;
+        int sol = 0;
+        while (i < puzzleSize * puzzleSize) {
+            int j = i;
+            j += 1;
+            while (j< puzzleSize * puzzleSize){
+            if (copy[j] < copy[i] && copy[ i] !=(puzzleSize * puzzleSize)) {
+                inver += 1;
+            }
+            if (solved[j] < solved[i] && solved[i] !=(puzzleSize * puzzleSize)){
+            sol += 1;
+            inver += 1;
+            }
+            j += 1;
+            }
+            i += 1;
+        }
+        if (inver % 2 == 0)
+            return true;
+    else
+        return false;
     }
 
     private State copy() throws CloneNotSupportedException {
