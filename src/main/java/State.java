@@ -7,6 +7,7 @@ public class State {
     public int pos;
     public int dist;
     public int cost;
+    public int bonus;
 
     public State(int[] list, Move move, int cost, int dist) {
         this.list = list;
@@ -18,6 +19,16 @@ public class State {
                 this.pos = i;
             }
         }
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        State state = (State) o;
+
+        return Arrays.equals(list, state.list);
     }
 
     public State makeAMove(Move step, int size) {
@@ -67,8 +78,13 @@ public class State {
                 clone.list[clone.pos] = 0;
                 return clone;
             default:
-                throw new RuntimeException("WTF");
+                throw new RuntimeException("No such move");
         }
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(list);
     }
 
     public static boolean checkState(int[] list, int puzzleSize) {
@@ -77,7 +93,7 @@ public class State {
         int inver = 0;
         int[] copy = new int[puzzleSize * puzzleSize];
 
-        for (int t = 0; t < puzzleSize*puzzleSize; t++){
+        for (int t = 0; t < puzzleSize * puzzleSize; t++) {
             copy[t] = list[t];
         }
 
@@ -87,59 +103,46 @@ public class State {
             if (copy[l] == 0)
                 i = l;
         }
-//        while (list[i] != 0) {
-//            i += 1;
-//        }
         copy[i] = puzzleSize * puzzleSize;
         if (puzzleSize % 2 == 0) {
             inver += i / puzzleSize;
         }
         i = 0;
-        while (solved[i] != 0){
-        i += 1;}
+        while (solved[i] != 0) {
+            i += 1;
+        }
         solved[i] = puzzleSize * puzzleSize;
         if (puzzleSize % 2 == 0) {
             inver += i / puzzleSize;
         }
         i = 0;
-        int sol = 0;
+//        int sol = 0;
         while (i < puzzleSize * puzzleSize) {
             int j = i;
             j += 1;
-            while (j< puzzleSize * puzzleSize){
-            if (copy[j] < copy[i] && copy[ i] !=(puzzleSize * puzzleSize)) {
-                inver += 1;
-            }
-            if (solved[j] < solved[i] && solved[i] !=(puzzleSize * puzzleSize)){
-            sol += 1;
-            inver += 1;
-            }
-            j += 1;
+            while (j < puzzleSize * puzzleSize) {
+                if (copy[j] < copy[i] && copy[i] != (puzzleSize * puzzleSize)) {
+                    inver += 1;
+                }
+                if (solved[j] < solved[i] && solved[i] != (puzzleSize * puzzleSize)) {
+//                    sol += 1;
+                    inver += 1;
+                }
+                j += 1;
             }
             i += 1;
         }
         if (inver % 2 == 0)
             return true;
-    else
-        return false;
+        else
+            return false;
     }
 
     private State copy() throws CloneNotSupportedException {
         return new State(list.clone(), move, cost, dist);
     }
 
-    @Override
-    public boolean equals(final Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
 
-        State state = (State) o;
 
-        return Arrays.equals(list, state.list);
-    }
 
-    @Override
-    public int hashCode() {
-        return Arrays.hashCode(list);
-    }
 }

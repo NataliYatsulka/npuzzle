@@ -14,9 +14,10 @@ public class Main2 {
         String size = null;
         Options options = Parsing.parsingInputArgs(args);
         String heuristic = "m";
-        boolean mapPath;
-        boolean original;
+//        boolean mapPath;
+//        boolean original;
         int puzzleSize = 0;
+        String koef = "1";
 
         HelpFormatter formatter = new HelpFormatter();
 
@@ -26,17 +27,27 @@ public class Main2 {
             path = cmd.getOptionValue("path");
             size = cmd.hasOption("size") ? cmd.getOptionValue("size") : null;
             heuristic = cmd.getOptionValue("heuristic");
-            mapPath = cmd.hasOption("mapPath");
-            original = cmd.hasOption("original");
+//            mapPath = cmd.hasOption("mapPath");
+//            original = cmd.hasOption("original");
+            koef = cmd.getOptionValue("koeficient");
+
+            try{
+                Integer.parseInt(size);
+            }catch (NumberFormatException ex) {
+                System.out.println("ERROR:  Bad size argument");
+                System.exit(1);
+            }
+
             Parsing.initArgs(path, size, heuristic, formatter, options);
 
-            System.out.println("path = " + path + "\nsize = " + size + "\nheuristic = " + heuristic + "\nmapPath = "
-                    + mapPath + "\norig = " + original);
+            System.out.println("path = " + path + "\nsize = " + size + "\nheuristic = " + heuristic);// + "\nmapPath = "
+//                    + mapPath + "\norig = " + original);
 
         } catch (ParseException e) {
             System.out.println(e.getMessage());
             Parsing.usage(formatter, options);
         }
+
         Integer[] randomMap = (size != null) ? Parsing.generatePuzzle(Integer.parseInt(size)) : Parsing.readFromFile(path);
         List<Integer> listInt = new ArrayList<>();
         for (int i = 0; i < randomMap.length; i++) {
@@ -54,7 +65,7 @@ public class Main2 {
         } catch (ParseException ex) {
             Parsing.usage(formatter, options);
         }
-
+//        System.out.println("heur = " + heuristic);
 //delete
         if (size != null) {
             for (int i = 0; i < Integer.parseInt(size) * Integer.parseInt(size); i++) {
@@ -65,18 +76,17 @@ public class Main2 {
         }
 
 
-        String input;
-//        List<Integer> list;
+//        String input;
         try {
             if (path != null) {
                 File f = new File(path);
                 if (!f.exists() || f.isDirectory() || !f.canRead()) {
                     throw new FileNotFoundException("ERROR:   File not found");
                 }
-                input = Parsing.readTextFile(path);
+//                input = Parsing.readTextFile(path);
                 listInt = Parsing.checkParsingFile(Parsing.readTextFileByLines(path));
 //                System.out.println(Parsing.puzzleSize);
-                System.out.println("list = " + listInt);
+//                System.out.println("list = " + listInt);
                 puzzleSize = Parsing.puzzleSize;
             }
         } catch (IOException | ParseException ex) {
@@ -87,14 +97,17 @@ public class Main2 {
                 .mapToInt(Integer::intValue)
                 .toArray();
         System.out.println(Arrays.toString(mas));
-        System.out.println("PPUUUUUUUZZZLLELELLE = " + puzzleSize);
+//        System.out.println("PPUUUUUUUZZZLLELELLE = " + puzzleSize);
+//        System.out.println("koef = " + Integer.parseInt(koef));
+        if (koef == null)
+            koef = "1";
+        if (heuristic == null)
+            heuristic = "m";
         if (!State.checkState(mas, puzzleSize))
             System.out.println("There are no solution of this puzzle");
         else {
-            new Algo(mas, heuristic).startSearch();
+            new Algo(mas, heuristic, Math.abs(Integer.parseInt(koef))).startSearch();
         }
-        Heuristics.puzzleGoal(puzzleSize);
-
-        System.out.println("\nEnf Of File");
+//        Heuristics.puzzleGoal(puzzleSize);
     }
 }

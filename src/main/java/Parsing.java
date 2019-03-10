@@ -53,13 +53,17 @@ public class Parsing {
         path.setRequired(true);
         options.addOption(heuristic);
 
-        Option mapPath = new Option("m", "path", false, "view path solving npuzzle");
-        path.setRequired(false);
-        options.addOption(mapPath);
+//        Option mapPath = new Option("m", "path", false, "view path solving npuzzle");
+//        path.setRequired(false);
+//        options.addOption(mapPath);
 
-        Option original = new Option("o", "original", false, "initial npuzzle");
+//        Option original = new Option("o", "original", false, "initial npuzzle");
+//        path.setRequired(false);
+//        options.addOption(original);
+
+        Option koeficient = new Option("k", "koeficient", true, "koeficient");
         path.setRequired(false);
-        options.addOption(original);
+        options.addOption(koeficient);
 
         return options;
     }
@@ -129,7 +133,7 @@ public class Parsing {
                 }
 
             }
-        }catch (NumberFormatException ex){
+        } catch (NumberFormatException ex) {
             System.out.println("ERROR:  Too big number!");
             System.exit(1);
         }
@@ -193,7 +197,7 @@ public class Parsing {
                 if (isNumeric(temp[j])) {
                     try {
                         listInt.add(Integer.valueOf(temp[j]));
-                    }catch (NumberFormatException ex){
+                    } catch (NumberFormatException ex) {
                         System.out.println("ERROR:  Too big number!");
                         System.exit(1);
                     }

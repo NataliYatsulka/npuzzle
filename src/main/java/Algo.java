@@ -10,12 +10,13 @@ public class Algo {
 
     public Function<int[], Integer> heuristicFunc;
     public int sizePuzzle;
+    public int koef;
     public Node node;
     public PriorityQueue<Node> openNodes;
     public List<State> path;
     public ObjectObjectOpenHashMap<State, Node> closedNodes;
 
-    public Algo(int[] mas, String heuristic) {
+    public Algo(int[] mas, String heuristic, int koef) {
 
         switch (heuristic) {
             case "h":
@@ -30,15 +31,12 @@ public class Algo {
             default:
                 throw new RuntimeException("Something went wrong");
         }
+        this.koef = koef;
         this.sizePuzzle = (int) Math.sqrt(mas.length);
-        System.out.println("this.sizePuzzle = " + this.sizePuzzle);
+//        System.out.println("this.sizePuzzle = " + this.sizePuzzle);
         this.node = new Node(null, new State(mas, null, 0, 0));
-        this.openNodes = new PriorityQueue<>((a1, a2) -> {
-            if (a1.state.cost == a2.state.cost) {
-                return a1.state.dist - a2.state.dist;
-            } else {
-                return a1.state.cost - a2.state.cost;
-            }
+        this.openNodes = new PriorityQueue<>((Node n1, Node n2) -> {
+            return (n1.state.bonus - n2.state.bonus);
         });
         this.path = new ArrayList<>();
         this.closedNodes = new ObjectObjectOpenHashMap<>();
@@ -54,6 +52,7 @@ public class Algo {
         }
 
         node.state.cost = heuristicFunc.apply(node.state.list);
+        node.state.bonus = node.state.dist + node.state.cost * koef;
         printPuzzle(node.state.list);
 
         while (!openNodes.isEmpty() && path.isEmpty()) {
@@ -72,23 +71,22 @@ public class Algo {
                 if (state != null) {
                     Node node = new Node(n, state);
                     node.state.cost = heuristicFunc.apply(node.state.list);
+                    node.state.bonus = node.state.dist + node.state.cost * koef;
                     openNodes.add(node);
                 }
             }
 
             maxOpenNode = openNodes.size() > maxOpenNode ? openNodes.size() : maxOpenNode;
         }
-            printPath();
-            System.out.println("Initial state:");
-            printPuzzle(node.state.list);
+        printPath();
+        System.out.println("Initial state:");
+        printPuzzle(node.state.list);
 
-            System.out.println("Path size: " + path.size());
-            System.out.println("Open nodes: " + maxOpenNode);
-            System.out.println("Closed nodes: " + closedNodes.size());
-        System.out.println("open NODES = " + openNodes.size());
+        System.out.println("Number of moves: " + (path.size() - 1));
+        System.out.println("Maximum number of states (complexity in size): " + maxOpenNode);
+        System.out.println("Complexity in time: " + closedNodes.size());
 
 
-        System.out.println("startSearch");
     }
 
     private void printPuzzle(int[] list) {
