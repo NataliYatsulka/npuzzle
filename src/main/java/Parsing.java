@@ -86,6 +86,7 @@ public class Parsing {
         System.out.println("listSort = " + list);
         List<Integer> range = IntStream.rangeClosed(0, size * size - 1)
                 .boxed().collect(Collectors.toList());
+
         System.out.println("range = " + range);
         if (!list.equals(range))
             throw new ParseException("ERROR:  Bad number in the puzzle");
@@ -118,14 +119,22 @@ public class Parsing {
         }
         List<String> list1 = list;
 
-        for (int i = 0; i < list.size(); i++) {
-            if (!list.get(i).isEmpty() && isNumeric(list.get(i))) {
-                puzzleSize = Integer.parseInt(list.get(i));
-                break;
+        try {
+            for (int i = 0; i < list.size(); i++) {
+                list.set(i, list.get(i).trim());
+                if (!list.get(i).isEmpty() && isNumeric(list.get(i))) {
+//                    if (Integer.parseInt(list.get(i))
+                    puzzleSize = Integer.parseInt(list.get(i));
+                    break;
+                }
+
             }
+        }catch (NumberFormatException ex){
+            System.out.println("ERROR:  Too big number!");
+            System.exit(1);
         }
 
-        System.out.println("puzzleSize = " + puzzleSize);
+//        System.out.println("puzzleSize = " + puzzleSize);
         if (puzzleSize < 3)
             throw new ParseException("ERROR:  Size of map cannot be < 3");
 
@@ -135,12 +144,13 @@ public class Parsing {
         for (int i = 0; i < list.size(); i++) {
             if (list.get(i).equals("") || list.get(i).equals(t)) {
                 k++;
-                System.out.println("11k = " + k);
+//                System.out.println("11k = " + k);
             }
         }
-
+//        System.out.println("list.size = " + list.size());
+//        System.out.println("list.sizze - k = " + (list.size() - k));
         if (list.size() - k != puzzleSize)
-            throw new ParseException("ERROR:  Bad amount of row");
+            throw new ParseException("ERROR:  Not the same amount of row as puzzzleSize");
 
         for (int i = 0; i < list.size(); i++) {
             if (!list.get(i).equals("") && !list.get(i).equals(t) && j < (list.size() - k)) {
@@ -153,7 +163,7 @@ public class Parsing {
             list1.remove(j);
         }
 
-        System.out.println("qqq" + list1);
+//        System.out.println("qqq" + list1);
 
         if (list1.size() != puzzleSize)
             throw new ParseException("ERROR: Puzzle doesn't exist with this size");
@@ -175,13 +185,19 @@ public class Parsing {
         for (int i = 0; i < list1.size(); i++) {
             temp = list1.get(i).trim().split("\\s+");
             for (j = 0; j < puzzleSize; j++) {
-                System.out.println("temp.lenght = " + temp.length);
+//                System.out.println("temp.lenght = " + temp.length);
                 if (temp.length != puzzleSize)
                     throw new ParseException("ERROR:  Bad row length");
                 if (!isNumeric(temp[j]))
                     throw new ParseException("ERROR:  Puzzle should be only numeric");
-                if (isNumeric(temp[j]))
-                    listInt.add(Integer.valueOf(temp[j]));
+                if (isNumeric(temp[j])) {
+                    try {
+                        listInt.add(Integer.valueOf(temp[j]));
+                    }catch (NumberFormatException ex){
+                        System.out.println("ERROR:  Too big number!");
+                        System.exit(1);
+                    }
+                }
             }
         }
 

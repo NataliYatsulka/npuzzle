@@ -42,7 +42,7 @@ public class Main2 {
         for (int i = 0; i < randomMap.length; i++) {
             listInt.add(randomMap[i]);
         }
-        System.out.println("lisssst = " + listInt);
+//        System.out.println("lisssst = " + listInt);
 //        System.out.println("Integer.parseInt(size) = " + Integer.parseInt(size));
         List<Integer> listCopy = new ArrayList<>();
         listCopy.addAll(listInt);
@@ -70,7 +70,7 @@ public class Main2 {
         try {
             if (path != null) {
                 File f = new File(path);
-                if (!f.exists() || f.isDirectory()) {
+                if (!f.exists() || f.isDirectory() || !f.canRead()) {
                     throw new FileNotFoundException("ERROR:   File not found");
                 }
                 input = Parsing.readTextFile(path);
