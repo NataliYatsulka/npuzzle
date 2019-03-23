@@ -85,6 +85,8 @@ public class Algo {
         System.out.println("Number of moves: " + (path.size() - 1));
         System.out.println("Maximum number of states (complexity in size): " + maxOpenNode);
         System.out.println("Complexity in time: " + closedNodes.size());
+        double duration = Math.abs(System.nanoTime() - Main2.startTime) / 1000000000.0;
+        System.out.println("Time duration: " + duration);
 
 
     }

@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Main2 {
+    public static long startTime = System.nanoTime();
 
     public static void main(String[] args) {
         String path = null;
@@ -106,6 +107,7 @@ public class Main2 {
         if (!State.checkState(mas, puzzleSize))
             System.out.println("There are no solution of this puzzle");
         else {
+            startTime = System.nanoTime();
             new Algo(mas, heuristic, Math.abs(Integer.parseInt(koef))).startSearch();
         }
 //        Heuristics.puzzleGoal(puzzleSize);
